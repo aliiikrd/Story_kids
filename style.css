@@ -140,6 +140,16 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Center placeholder text initially */
+.story-content.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 300px;
+}
+
 /* Ad containers */
 .ad-container {
     background: #f1f5f9;
@@ -152,23 +162,11 @@ body {
     color: #64748b;
 }
 
-/* Responsive ad visibility */
-@media (max-width: 767px) {
-    .mobile-banner {
-        display: block !important;
-    }
-    .desktop-banner {
-        display: none !important;
-    }
-}
-
-@media (min-width: 768px) {
-    .mobile-banner {
-        display: none !important;
-    }
-    .desktop-banner {
-        display: block !important;
-    }
+/* Optional: icon ad style */
+.icon-ad {
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
 /* Footer */
