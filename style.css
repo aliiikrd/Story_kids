@@ -173,8 +173,9 @@ body {
 footer {
     text-align: center;
     color: white;
-    font-size: 0.8rem;
-    margin-top: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 30px;
     opacity: 0.9;
 }
 
@@ -239,84 +240,4 @@ footer {
         box-shadow: none;
         margin: 0;
     }
-    /* Footer - Magical Design */
-footer {
-    text-align: center;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 50px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Animated heart */
-footer .heart {
-    display: inline-block;
-    color: #ff6b6b;
-    font-size: 1.2rem;
-    animation: heartbeat 1.2s ease infinite;
-    transform-origin: center;
-    margin: 0 2px;
-}
-
-/* Magic stars */
-footer .magic-star {
-    display: inline-block;
-    opacity: 0.7;
-    margin: 0 8px;
-    animation: float 3s ease-in-out infinite;
-}
-
-footer .magic-star:first-child {
-    animation-delay: 0s;
-}
-
-footer .magic-star:last-child {
-    animation-delay: 1s;
-}
-
-/* Hover effect */
-footer:hover {
-    backdrop-filter: blur(8px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-    transform: translateY(-2px);
-}
-
-/* Animations */
-@keyframes heartbeat {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-5px) rotate(5deg);
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    footer {
-        font-size: 0.8rem;
-        padding: 15px;
-        margin-top: 20px;
-    }
-    
-    footer .magic-star {
-        margin: 0 4px;
-    }
-}
 }
