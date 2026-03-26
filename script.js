@@ -7,7 +7,7 @@
 // ============================================================
 
 const GROQ_API_KEY = "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";   // <-- PASTE YOUR API KEY HERE
-const MODEL = "mixtral-8x7b-32768";          // Free model on Groq
+const MODEL = "llama-3.3-70b-versatile";     // Free model on Groq (active)          // Free model on Groq
 
 // Story themes for variety
 const storyThemes = [
