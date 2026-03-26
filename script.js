@@ -5,11 +5,10 @@
 //    (Sign up, then create a token with "read" permissions)
 // 2. Replace "YOUR_HF_TOKEN" below with your actual token.
 // 3. Model: using google/flan-t5-large (free, open-source, good for story generation)
-//    You can also try: mistralai/Mistral-7B-Instruct-v0.1 (if your token allows)
 // ============================================================
 
 const HF_TOKEN = "YOUR_HF_TOKEN";   // <-- PASTE YOUR TOKEN HERE
-const MODEL = "google/flan-t5-large";  // free open-source model
+const MODEL = "google/flan-t5-large";
 
 // Story themes for variety
 const storyThemes = [
@@ -174,7 +173,7 @@ async function generateStory() {
     }
 }
 
-// Add some interactive effects
+// Add interactive effects
 function addInteractiveEffects() {
     const generateBtn = document.getElementById('generateBtn');
     
