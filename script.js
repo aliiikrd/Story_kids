@@ -40,7 +40,7 @@ async function generateStoryWithGroq(prompt) {
             model: MODEL,
             messages: [
                 {
-                    {
+                    
     role: "system",
     content: `You are a master storyteller who creates magical, soothing bedtime stories for children aged 3–8. Your tales are gentle, imaginative, and filled with warmth. Each story must:
 
@@ -51,7 +51,7 @@ async function generateStoryWithGroq(prompt) {
 - End with a comforting, happy resolution and a soft bedtime closing like "And they all drifted off to sleep, dreaming sweet dreams."
 
 Keep the language lyrical yet simple, with a rhythm that soothes. Aim for about 5 minutes to read aloud. Always conclude with a peaceful, reassuring tone that leaves the child feeling safe and ready for sleep.`
-}
+                
                 },
                 {
                     role: "user",
