@@ -6,10 +6,10 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #003331 0%, #007C78 100%);
     min-height: 100vh;
     padding: 20px;
-    color: #333;
+    color: #e0f2fe;
 }
 
 .container {
@@ -19,11 +19,12 @@ body {
 
 /* Main card */
 .story-card {
-    background: white;
+    background: #00524F;
     border-radius: 30px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     margin-bottom: 20px;
+    border: 1px solid rgba(255, 89, 0, 0.3);
     animation: fadeIn 0.5s ease-in;
 }
 
@@ -39,10 +40,11 @@ body {
 }
 
 .header {
-    background: #ff9a3c;
+    background: #FF5900;
     padding: 25px;
     text-align: center;
     color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .header h1 {
@@ -64,7 +66,8 @@ body {
 
 .header p {
     font-size: 1rem;
-    opacity: 0.9;
+    opacity: 0.95;
+    font-weight: 500;
 }
 
 .content {
@@ -73,7 +76,7 @@ body {
 
 /* Button */
 .generate-btn {
-    background: #4c51bf;
+    background: #FF5900;
     color: white;
     border: none;
     padding: 14px 28px;
@@ -84,13 +87,13 @@ body {
     transition: all 0.3s ease;
     width: 100%;
     margin-bottom: 25px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .generate-btn:hover {
-    background: #5a67d8;
+    background: #FF7A2E;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .generate-btn:active {
@@ -98,7 +101,7 @@ body {
 }
 
 .generate-btn:disabled {
-    background: #a0aec0;
+    background: #6c8b8a;
     cursor: not-allowed;
     transform: none;
 }
@@ -111,8 +114,8 @@ body {
 }
 
 .spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #ff9a3c;
+    border: 4px solid #00BAB4;
+    border-top: 4px solid #FF5900;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -127,15 +130,15 @@ body {
 
 /* Story display */
 .story-content {
-    background: #f9f9ff;
+    background: #003331;
     border-radius: 20px;
     padding: 25px;
     line-height: 1.7;
     font-size: 1rem;
-    color: #2d3748;
+    color: #e0f2fe;
     white-space: pre-wrap;
     font-family: 'Georgia', serif;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #FF5900;
     min-height: 300px;
     transition: all 0.3s ease;
 }
@@ -152,14 +155,13 @@ body {
 
 /* Ad containers */
 .ad-container {
-    background: #f1f5f9;
+    background: #00524F;
     border-radius: 16px;
     padding: 15px;
     margin: 20px 0;
     text-align: center;
-    border: 1px dashed #cbd5e0;
-    font-size: 0.8rem;
-    color: #64748b;
+    border: 1px dashed #00BAB4;
+    color: #cbd5e1;
 }
 
 /* Optional: icon ad style */
@@ -172,11 +174,31 @@ body {
 /* Footer */
 footer {
     text-align: center;
-    color: white;
+    font-size: 0.9rem;
     font-weight: bold;
-    font-size: 1rem;
     margin-top: 30px;
-    opacity: 0.9;
+    padding: 12px 20px;
+    color: #e0f2fe;
+    border: 2px solid #FF5900;
+    border-radius: 50px;
+    background: transparent;
+    transition: all 0.3s ease;
+    display: inline-block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer .heart {
+    display: inline-block;
+    color: #FF5900;
+    animation: heartbeat 1.2s ease infinite;
+    margin: 0 2px;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
 }
 
 /* Responsive Design */
@@ -205,6 +227,11 @@ footer {
     .story-content {
         font-size: 0.9rem;
         padding: 20px;
+    }
+    
+    footer {
+        font-size: 0.8rem;
+        padding: 10px 16px;
     }
 }
 
