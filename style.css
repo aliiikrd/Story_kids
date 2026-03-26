@@ -152,12 +152,23 @@ body {
     color: #64748b;
 }
 
-.banner-ad {
-    min-height: 90px;
+/* Responsive ad visibility */
+@media (max-width: 767px) {
+    .mobile-banner {
+        display: block !important;
+    }
+    .desktop-banner {
+        display: none !important;
+    }
 }
 
-.multitag-ad {
-    min-height: 250px;
+@media (min-width: 768px) {
+    .mobile-banner {
+        display: none !important;
+    }
+    .desktop-banner {
+        display: block !important;
+    }
 }
 
 /* Footer */
