@@ -1,14 +1,13 @@
 // ============================================================
-// CONFIGURATION
+// CONFIGURATION – GROQ API (Free alternative to Hugging Face)
 // ============================================================
-// 1. Get your FREE Hugging Face API token from https://huggingface.co/settings/tokens
-//    (Sign up, then create a token with "read" permissions)
-// 2. Replace "YOUR_HF_TOKEN" below with your actual token.
-// 3. Model: using google/flan-t5-large (free, open-source, good for story generation)
+// 1. Sign up at https://console.groq.com
+// 2. Create an API key (free tier)
+// 3. Replace YOUR_GROQ_API_KEY below
 // ============================================================
 
-const HF_TOKEN = "YOUR_HF_TOKEN";   // <-- PASTE YOUR TOKEN HERE
-const MODEL = "google/flan-t5-large";
+const GROQ_API_KEY = "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";   // <-- PASTE YOUR API KEY HERE
+const MODEL = "mixtral-8x7b-32768";          // Free model on Groq
 
 // Story themes for variety
 const storyThemes = [
@@ -29,49 +28,39 @@ function getRandomTheme() {
     return storyThemes[Math.floor(Math.random() * storyThemes.length)];
 }
 
-// Helper function to call Hugging Face API
-async function generateStoryWithHuggingFace(prompt) {
-    try {
-        const response = await fetch(
-            `https://api-inference.huggingface.co/models/${MODEL}`,
-            {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${HF_TOKEN}`,
-                    "Content-Type": "application/json"
+// Helper function to call Groq API
+async function generateStoryWithGroq(prompt) {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            model: MODEL,
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a friendly children's storyteller. You create magical, soothing bedtime stories for young children (ages 3-8). Always end with a happy ending and include a gentle lesson."
                 },
-                body: JSON.stringify({
-                    inputs: prompt,
-                    parameters: {
-                        max_new_tokens: 600,
-                        temperature: 0.85,
-                        do_sample: true,
-                        top_p: 0.95,
-                        repetition_penalty: 1.1
-                    }
-                })
-            }
-        );
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            temperature: 0.8,
+            max_tokens: 600,
+            top_p: 0.95
+        })
+    });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || `HTTP ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        // Handle different response formats
-        if (Array.isArray(result) && result[0] && result[0].generated_text) {
-            return result[0].generated_text;
-        } else if (result.generated_text) {
-            return result.generated_text;
-        } else {
-            throw new Error("Unexpected API response format");
-        }
-    } catch (error) {
-        console.error('API call failed:', error);
-        throw error;
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
     }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
 }
 
 // Create a detailed prompt for a 5-minute bedtime story
@@ -86,9 +75,7 @@ The story should:
 - Teach a gentle lesson about kindness, friendship, or courage
 - Have a magical and soothing tone perfect for bedtime
 
-Make it engaging, descriptive, and comforting. Start with "Once upon a time" and end with "Goodnight, sweet dreams."
-
-Story:`;
+Make it engaging, descriptive, and comforting. Start with "Once upon a time" and end with "Goodnight, sweet dreams."`;
 }
 
 // Fallback stories in case API fails
@@ -107,7 +94,7 @@ function getFallbackStory() {
 function cleanStory(rawStory) {
     let cleaned = rawStory;
     
-    // Remove any leftover prompt text
+    // Remove any leftover prompt text (just in case)
     if (cleaned.includes("Write a children's bedtime story")) {
         cleaned = cleaned.replace(/^Write a children's bedtime story.*?Story:/s, '');
     }
@@ -139,16 +126,16 @@ async function generateStory() {
     storyDiv.style.opacity = '0.5';
 
     try {
-        // Check if token is configured
-        if (HF_TOKEN === "YOUR_HF_TOKEN") {
-            throw new Error("Please configure your Hugging Face API token in script.js");
+        // Check if API key is configured
+        if (GROQ_API_KEY === "YOUR_GROQ_API_KEY") {
+            throw new Error("Please configure your Groq API key in script.js");
         }
 
         const prompt = createPrompt();
-        const rawStory = await generateStoryWithHuggingFace(prompt);
+        const rawStory = await generateStoryWithGroq(prompt);
         const cleanedStory = cleanStory(rawStory);
         
-        // Add some magic sparkle animation
+        // Add animation
         storyDiv.style.opacity = '0';
         setTimeout(() => {
             storyDiv.innerHTML = cleanedStory.replace(/\n/g, '<br>');
@@ -173,39 +160,32 @@ async function generateStory() {
     }
 }
 
-// Add interactive effects
+// Add interactive effects (ripple)
 function addInteractiveEffects() {
     const generateBtn = document.getElementById('generateBtn');
-    
-    // Add ripple effect on click
     generateBtn.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
         this.appendChild(ripple);
-        
         const x = e.clientX - e.target.offsetLeft;
         const y = e.clientY - e.target.offsetTop;
-        
         ripple.style.left = `${x}px`;
         ripple.style.top = `${y}px`;
-        
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
+        setTimeout(() => ripple.remove(), 600);
     });
 }
 
-// Check if token is configured on load
+// Check if API key is configured on load
 function checkTokenOnLoad() {
-    if (HF_TOKEN === "YOUR_HF_TOKEN") {
+    if (GROQ_API_KEY === "YOUR_GROQ_API_KEY") {
         const storyDiv = document.getElementById('storyOutput');
         storyDiv.innerHTML = `
             ⚠️ <strong>Setup Required</strong><br><br>
             To start generating magical stories:
             <ol style="margin: 15px 0 0 20px; line-height: 1.6;">
-                <li>Get your free Hugging Face token from <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a></li>
+                <li>Get your free Groq API key from <a href="https://console.groq.com" target="_blank">console.groq.com</a> (free tier)</li>
                 <li>Open the <code>script.js</code> file</li>
-                <li>Replace <code>YOUR_HF_TOKEN</code> with your actual token</li>
+                <li>Replace <code>YOUR_GROQ_API_KEY</code> with your actual key</li>
                 <li>Refresh this page and enjoy! 🎉</li>
             </ol>
             <br>
@@ -219,11 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
     addInteractiveEffects();
     checkTokenOnLoad();
     
-    // Attach event listener
     const generateBtn = document.getElementById('generateBtn');
     generateBtn.addEventListener('click', generateStory);
     
-    // Optional: Add keyboard shortcut (Enter key)
+    // Keyboard shortcut (Enter)
     document.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !generateBtn.disabled) {
             generateStory();
@@ -238,7 +217,6 @@ style.textContent = `
         position: relative;
         overflow: hidden;
     }
-    
     .ripple {
         position: absolute;
         border-radius: 50%;
@@ -247,7 +225,6 @@ style.textContent = `
         animation: ripple-animation 0.6s linear;
         pointer-events: none;
     }
-    
     @keyframes ripple-animation {
         to {
             transform: scale(4);
