@@ -1,15 +1,10 @@
 // ============================================================
-// CONFIGURATION – GROQ API (Free alternative to Hugging Face)
+// CONFIGURATION – GROQ API
 // ============================================================
-// 1. Sign up at https://console.groq.com
-// 2. Create an API key (free tier)
-// 3. Replace YOUR_GROQ_API_KEY below
-// ============================================================
+const GROQ_API_KEY = "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";   // <-- PASTE YOUR KEY HERE
+const MODEL = "llama-3.3-70b-versatile";     // active free model
 
-const GROQ_API_KEY = "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";   // <-- PASTE YOUR API KEY HERE
-const MODEL = "llama-3.3-70b-versatile";     // Free model on Groq (active)          // Free model on Groq
-
-// Story themes for variety
+// Story themes
 const storyThemes = [
     "a friendly dragon who learns to share",
     "a little bunny discovering courage",
@@ -23,12 +18,10 @@ const storyThemes = [
     "a fairy teaching kindness"
 ];
 
-// Get random theme
 function getRandomTheme() {
     return storyThemes[Math.floor(Math.random() * storyThemes.length)];
 }
 
-// Helper function to call Groq API
 async function generateStoryWithGroq(prompt) {
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
@@ -63,7 +56,6 @@ async function generateStoryWithGroq(prompt) {
     return data.choices[0].message.content;
 }
 
-// Create a detailed prompt for a 5-minute bedtime story
 function createPrompt() {
     const theme = getRandomTheme();
     return `Write a beautiful children's bedtime story about ${theme}. 
@@ -78,55 +70,39 @@ The story should:
 Make it engaging, descriptive, and comforting. Start with "Once upon a time" and end with "Goodnight, sweet dreams."`;
 }
 
-// Fallback stories in case API fails
 function getFallbackStory() {
     const fallbacks = [
         "Once upon a time, in a cozy little burrow, lived a brave little bunny named Benjamin. One night, he helped a lost firefly find its family. The firefly's family was so grateful they lit up the entire forest with magical lights. Benjamin learned that even the smallest act of kindness can create the biggest joy. From that night on, Benjamin and the fireflies became best friends, spreading light and happiness to all. Goodnight, sweet dreams! 🌙✨",
-        
         "In a land where clouds were made of cotton candy, there lived a friendly dragon named Sparkle. Unlike other dragons, Sparkle didn't breathe fire – she breathed glitter and joy! One day, she helped a sad princess find her missing laughter by showing her all the beautiful things in the world. The princess learned that happiness is everywhere if you just look for it. Sparkle and the princess became friends forever, spreading sparkles and smiles. Goodnight, sweet dreams! 🐉✨",
-        
         "Deep in an enchanted forest, a tiny mouse named Milo dreamed of being brave. One moonlit night, he helped a trapped owl escape from a net. The grateful owl taught Milo that true courage isn't about being big – it's about having a big heart. From that day forward, Milo became the hero of the forest, showing everyone that even the smallest creature can make a huge difference. Goodnight, sweet dreams! 🐭🌟"
     ];
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
 }
 
-// Clean and format the generated story
 function cleanStory(rawStory) {
     let cleaned = rawStory;
-    
-    // Remove any leftover prompt text (just in case)
     if (cleaned.includes("Write a children's bedtime story")) {
         cleaned = cleaned.replace(/^Write a children's bedtime story.*?Story:/s, '');
     }
-    
-    // Remove any markdown formatting
     cleaned = cleaned.replace(/\*\*/g, '');
     cleaned = cleaned.replace(/###/g, '');
-    
-    // Ensure proper spacing
     cleaned = cleaned.trim();
-    
-    // Add bedtime closing if missing
     if (!cleaned.toLowerCase().includes('goodnight') && !cleaned.toLowerCase().includes('sweet dreams')) {
         cleaned += "\n\nGoodnight, sweet dreams! 🌙✨";
     }
-    
     return cleaned;
 }
 
-// Main function to generate story
 async function generateStory() {
     const generateBtn = document.getElementById('generateBtn');
     const loadingDiv = document.getElementById('loading');
     const storyDiv = document.getElementById('storyOutput');
 
-    // Disable button and show loading
     generateBtn.disabled = true;
     loadingDiv.style.display = 'block';
     storyDiv.style.opacity = '0.5';
 
     try {
-        // Check if API key is configured
         if (GROQ_API_KEY === "YOUR_GROQ_API_KEY") {
             throw new Error("Please configure your Groq API key in script.js");
         }
@@ -135,7 +111,6 @@ async function generateStory() {
         const rawStory = await generateStoryWithGroq(prompt);
         const cleanedStory = cleanStory(rawStory);
         
-        // Add animation
         storyDiv.style.opacity = '0';
         setTimeout(() => {
             storyDiv.innerHTML = cleanedStory.replace(/\n/g, '<br>');
@@ -144,8 +119,6 @@ async function generateStory() {
         
     } catch (error) {
         console.error('Generation error:', error);
-        
-        // Use fallback story if API fails
         const fallbackStory = getFallbackStory();
         storyDiv.innerHTML = `
             ⚠️ <strong>Using offline story mode</strong><br><br>
@@ -160,7 +133,6 @@ async function generateStory() {
     }
 }
 
-// Add interactive effects (ripple)
 function addInteractiveEffects() {
     const generateBtn = document.getElementById('generateBtn');
     generateBtn.addEventListener('click', function(e) {
@@ -175,7 +147,6 @@ function addInteractiveEffects() {
     });
 }
 
-// Check if API key is configured on load
 function checkTokenOnLoad() {
     if (GROQ_API_KEY === "YOUR_GROQ_API_KEY") {
         const storyDiv = document.getElementById('storyOutput');
@@ -194,15 +165,11 @@ function checkTokenOnLoad() {
     }
 }
 
-// Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', () => {
     addInteractiveEffects();
     checkTokenOnLoad();
-    
     const generateBtn = document.getElementById('generateBtn');
     generateBtn.addEventListener('click', generateStory);
-    
-    // Keyboard shortcut (Enter)
     document.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !generateBtn.disabled) {
             generateStory();
@@ -210,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add ripple animation CSS dynamically
 const style = document.createElement('style');
 style.textContent = `
     .generate-btn {
